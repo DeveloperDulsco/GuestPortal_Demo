@@ -1,0 +1,32 @@
+﻿Version : 1.2.0.0
+Date    : 10/01/2021
+Changes :
+
+1. Added Sync topup during topup this change depends on DB change in SP (Usp_GetActivePaymentTransctions)
+
+	- This SP shoud return adjust authorizaion data for existing pre-auth in order to do sync topup.
+
+2. Fixed penetration test point:
+
+	a. Jquery Version changes
+	b. Removed MVC version from all response header
+	c. Remived Server name from all response header
+	d. Added web configuration to secure cookies
+	e. Added web configuration to remove X-Powered-By
+	f. Added web configuration for Strict-Transport-Security
+	g. Added web configuration for X-Permitted-Cross-Domain-Policies to permitt none
+	h. Added web configuration to remove Referrer-Policy
+	i. Added web configuration to MIME sniffing (X-Content-Type-Option)
+	j. Added web configuration to stop cross site scripting attach (X-Xss-Protection)
+	k. Added web configuration to block I-Frame loading (X-Frame-Options)
+	l. Added httpCookies for SSL only
+
+---------------------------------------------------------------------------------------------------------------
+Version : 1.2.1.0
+Date    : 3/01/2021
+Changes :
+
+1. Adjust authorization null handled
+
+V3.0
+1) Updated Regula API
