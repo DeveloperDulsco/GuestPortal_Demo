@@ -1588,7 +1588,7 @@
             return response;
         });
 
-        const validateDocumentDirect = (document) => httpPost(OCRAPIBaseURL + '/ProcessDocument', document).then(response => {
+        const validateDocumentDirect = (document) => httpPost(AdaptorAPIBaseURL + '/ProcessDocument', document).then(response => {
             return response;
         });
 
@@ -1687,7 +1687,8 @@
                     validateDocumentDirect({
                         RequestObject: {
                             Base64Image: imageBase64,
-                            ImageFormat: ".jpg"
+                            ImageFormat: ".jpg",
+                            OCRURL: OCRAPIBaseURL
                         }
 
                     }).then(response => {
