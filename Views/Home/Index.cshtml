@@ -10,10 +10,13 @@
 
     string RoomUpsellPackages = ViewBag.RoomUpsellPackages;
     string SpecialPackages = ViewBag.SpecialPackages;
-
+    
 }
+@*@{var docurl = System.Configuration.ConfigurationManager.AppSettings["OCRAPIBaseURL"]; }*@
+
 <script>
-        var AdaptorAPIBaseURL = "@ViewBag.AdaptorAPIBaseURL";
+    var AdaptorAPIBaseURL = "@ViewBag.AdaptorAPIBaseURL";
+    var OCRAPIBaseURL = "@ViewBag.OCRAPIBaseURL";
         ReservationNumber = "@Model.ReservationNumber"
         ReservationNameID = "@Model.ReservationNameID"
         var IsDepositAvailable = "@Model.IsDepositAvailable";
@@ -38,7 +41,8 @@
 </script>
 
 <style>
-    .adyen-checkout__button__text {
+    .adyen-checkout__button__text
+    {
         width: 100% !important;
     }
 </style>
@@ -96,19 +100,19 @@
                 </div>
                 @*@{ PageNo++;}*@
                 @*<div class="col">
-                    <a class="d-flex justify-content-center tabs" href="#Questions">
-                        <div class="count">
-                            <span class="number">@PageNo</span><span class="value">Declaration</span>
-                        </div>
-                    </a>
-                </div>*@
+                        <a class="d-flex justify-content-center tabs" href="#Questions">
+                            <div class="count">
+                                <span class="number">@PageNo</span><span class="value">Declaration</span>
+                            </div>
+                        </a>
+                    </div>*@
                 @*<div class="col">
-            <a class="d-flex justify-content-center tabs" href="#qrCode">
-                <div class="count">
-                    <span class="number">7</span><span class="value">Finish</span>
-                </div>
-            </a>
-        </div>*@
+                        <a class="d-flex justify-content-center tabs" href="#qrCode">
+                            <div class="count">
+                                <span class="number">7</span><span class="value">Finish</span>
+                            </div>
+                        </a>
+                    </div>*@
             </div>
         </div>
     </div>
@@ -204,17 +208,17 @@
                             @Html.TextBoxFor(model => model.Profiles[0].PostalCode, new { @class = "form-control", value = "1212" })
                         </div>
                         @*<div class="form-group col-md-4">
-            <label>ALL Membership Number<a class="info" href="#" data-toggle="tooltip" title="Accor Live Limitless membership no."></a></label>
-            @Html.TextBoxFor(model => model.MembershipNo, new { @class = "form-control", onchange = "enableDisableMembershipCheckbox()" })
-        </div>
-        <div class="form-group col-md-4">
-            <div class="form-check chk-cu">
-                @Html.CheckBoxFor(model => model.IsMembershipRequested, new { @class = "form-check-input", onchange = "enableDisableMembership(this.checked)" })
-               <label class="form-check-label" for="IsMembershipRequested">
-                    I would like to be invited for complimentary ALL membership.
-                </label>
-            </div>
-        </div>*@
+                                <label>ALL Membership Number<a class="info" href="#" data-toggle="tooltip" title="Accor Live Limitless membership no."></a></label>
+                                @Html.TextBoxFor(model => model.MembershipNo, new { @class = "form-control", onchange = "enableDisableMembershipCheckbox()" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="form-check chk-cu">
+                                    @Html.CheckBoxFor(model => model.IsMembershipRequested, new { @class = "form-check-input", onchange = "enableDisableMembership(this.checked)" })
+                                   <label class="form-check-label" for="IsMembershipRequested">
+                                        I would like to be invited for complimentary ALL membership.
+                                    </label>
+                                </div>
+                            </div>*@
                         <div class="form-group col-md-4">
                             <label>Flight Number</label>
                             @Html.TextBoxFor(model => model.FlightNo, new { @class = "form-control" })
@@ -235,14 +239,14 @@
                         <div class="form-group col-md-4">
                             <label>Flight Number</label>
                             @Html.TextBoxFor(model => model.FlightNo, new { @class = "form-control" })-->
-                            @*<input type="text" class="form-control" id="flightno" name="flightno" value="@Model.FlightNo">*@
-                        <!--</div>
-                        <div class="form-group col-md-4 time-cstm">
-                            <label>Expected Arrival Time(Hotel)  <span class="error">*</span></label>
-                            @Html.TextBoxFor(model => model.ExpectedTimeofArrival, new { @class = "form-control", id = "timepicker1", type = "time" })
-                            <span>Hotel Check In Time is 03.00pm</span>-->
-                            @*<input type="time" id="timepicker1" class="form-control" name="expected_arrival" value="@Model.ExpectedTimeofArrival">*@
-                        <!--</div>
+                    @*<input type="text" class="form-control" id="flightno" name="flightno" value="@Model.FlightNo">*@
+                    <!--</div>
+                    <div class="form-group col-md-4 time-cstm">
+                        <label>Expected Arrival Time(Hotel)  <span class="error">*</span></label>
+                        @Html.TextBoxFor(model => model.ExpectedTimeofArrival, new { @class = "form-control", id = "timepicker1", type = "time" })
+                        <span>Hotel Check In Time is 03.00pm</span>-->
+                    @*<input type="time" id="timepicker1" class="form-control" name="expected_arrival" value="@Model.ExpectedTimeofArrival">*@
+                    <!--</div>
                     </div>-->
                     <div class="row">
                         <div class="col-lg-6 col-xl-4 offset-xl-8 offset-lg-6">
@@ -419,23 +423,23 @@
                                 </div>
                             </div>
                             @*<div class="form-group row total" style=" margin-top: -20px; line-height: 15px;">
-                                <div class="col-10 col-lg-10 col-xl-10">
-                                    <span><span style="margin-left: -5px;">Note: Incidental fees are to cover any additional cost that may be incurred during your stay and any unused fees will be fully refunded to your Credit Card at the end of your stay. For guests using Debit Cards for payment, incidental fees will not be charged and an alternative form of deposit for incidental fees is required on arrival. Any selected room upgrade will only be charged upon availability confirmation.</span></span>
-                                </div>
-                            </div>*@
+                                    <div class="col-10 col-lg-10 col-xl-10">
+                                        <span><span style="margin-left: -5px;">Note: Incidental fees are to cover any additional cost that may be incurred during your stay and any unused fees will be fully refunded to your Credit Card at the end of your stay. For guests using Debit Cards for payment, incidental fees will not be charged and an alternative form of deposit for incidental fees is required on arrival. Any selected room upgrade will only be charged upon availability confirmation.</span></span>
+                                    </div>
+                                </div>*@
                             @*<br />
-                            <div class="form-group row total" style=" margin-top: -20px; line-height: 15px;">
-                                <div class="col-10 col-lg-10 col-xl-10">
-                                    <span>
-                                        <span style="margin-left: -5px;">
-                                            <b>
-                                                In adherence to Singapore Government regulations, please be reminded that no more than 5 persons including the registered guests are allowed in a guestroom at any point of time.
-                                                Thank you in advance for your cooperation.
-                                            </b>
+                                <div class="form-group row total" style=" margin-top: -20px; line-height: 15px;">
+                                    <div class="col-10 col-lg-10 col-xl-10">
+                                        <span>
+                                            <span style="margin-left: -5px;">
+                                                <b>
+                                                    In adherence to Singapore Government regulations, please be reminded that no more than 5 persons including the registered guests are allowed in a guestroom at any point of time.
+                                                    Thank you in advance for your cooperation.
+                                                </b>
+                                            </span>
                                         </span>
-                                    </span>
-                                </div>
-                            </div>*@
+                                    </div>
+                                </div>*@
                         </div>
                         <div class="col-xl-5 sign-here">
                             <div class="form-check">
@@ -446,11 +450,11 @@
 
                             </div>
                             <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="chkFine" name="checkbox2">
-            <label class="form-check-label" for="chkFine">
-               The hotel is a smoke-free hotel. A cleaning fee of S$275 nett per incident will be charged to a guest smoking in the room and/or within the hotel premises.
-            </label>
-        </div>
+                                <input class="form-check-input" type="checkbox" id="chkFine" name="checkbox2">
+                                <label class="form-check-label" for="chkFine">
+                                    The hotel is a smoke-free hotel. A cleaning fee of S$275 nett per incident will be charged to a guest smoking in the room and/or within the hotel premises.
+                                </label>
+                            </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="IsTermsAndConditionAccepted" name="IsTermsAndConditionAccepted" value="True">
                                 <label class="form-check-label" for="acceptTermsAndCondition">
@@ -489,28 +493,28 @@
             @if (!Model.IsDepositAvailable)
             {
                 <div class="tab-pane content-wrapper cstm-form @((ViewBag.PaymentProcessed && !ViewBag.IsPaymentSuccess) ? "active" : "paymentdone")" id="payment">
-                <h1>PAYMENT</h1>
-                @*<h2 class="mb-none">PAYMENT</h2>\*@
-                <div class="row">
-                    <div class="col-lg-4 col-md-2 col-sm-1">
+                    <h1>PAYMENT</h1>
+                    @*<h2 class="mb-none">PAYMENT</h2>\*@
+                    <div class="row">
+                        <div class="col-lg-4 col-md-2 col-sm-1">
 
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-10  payment">
-                        <div id="dropin-container"></div>
-                    </div>
-                    <div class="col-lg-4 col-md-2 col-sm-1">
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-10  payment">
+                            <div id="dropin-container"></div>
+                        </div>
+                        <div class="col-lg-4 col-md-2 col-sm-1">
 
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-xl-4 offset-xl-8 offset-lg-6">
-                        <div class="btn-grp d-flex justify-content-between">
-                            <button class="btn_cancel" value='Back'>Back</button>
-                            <button style="display:none" class="btn_next moveNext" id="btnPaymentNextButton">Next<img src="~/assets/images/arrow_icon.png"></button>
+                    <div class="row">
+                        <div class="col-lg-6 col-xl-4 offset-xl-8 offset-lg-6">
+                            <div class="btn-grp d-flex justify-content-between">
+                                <button class="btn_cancel" value='Back'>Back</button>
+                                <button style="display:none" class="btn_next moveNext" id="btnPaymentNextButton">Next<img src="~/assets/images/arrow_icon.png"></button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             }
             <div class="tab-pane content-wrapper cstm-form @((ViewBag.PaymentProcessed && ViewBag.IsPaymentSuccess)  ? "active" : "")  " id="document">
                 <h1>Document</h1>
@@ -560,109 +564,109 @@
                 </div>
             </div>
             @*<div class="tab-pane content-wrapper cstm-form" id="Questions">
-                <form id="frmDeclaration" name="frmDeclaration">
-                    <div class="question">
-                        <h1>declaration</h1>
-                        <h2 class="mb-none">declaration</h2>
-                        <div class="alert alert-warning" role="alert">
-                            In conjunction with requirements by the local authorities, Fairmont Singapore would be most appreciative if you could assist in kindly filling out this declaration.
-                        </div>
-                        @{
-                            int QuestionIndex = 1;
-                        }
-                        @foreach (var question in Model.Questions)
-                        {
-                            <div class="qs">
-
-                                @if (question.QuestionType == "Radio")
-                                {
-                                    <p>
-                                        <span>@(QuestionIndex++)</span>
-                                        @question.Question <span class="error" style="background:white">*</span>
-                                    </p>
-
-                                    <div class="ans">
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="1_Answer_@question.QuestionID" required
-                                                   name="Answer[@question.QuestionID]"
-                                                   value="Yes"
-                                                   class="custom-control-input declarationRadio">
-                                            <label class="custom-control-label" for="1_Answer_@question.QuestionID">Yes</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="2_Answer_@question.QuestionID"
-                                                   name="Answer[@question.QuestionID]" required
-                                                   value="No"
-                                                   class="custom-control-input declarationRadio">
-                                            <label class="custom-control-label" for="2_Answer_@question.QuestionID">No</label>
-                                        </div>
-                                    </div>
-                                }
-                                else if (question.QuestionType == "Checkbox")
-                                {
-                                    <div class="custom-control custom-checkbox" style="padding-left: 0">
-                                        <p>
-                                            <span>@(QuestionIndex++)</span>
-
-                                            <label class="custom-control-label1" for="Answer[@question.QuestionID]">
-                                                <input type="checkbox" class="custom-control-input1 passholder"
-                                                       id="Answer[@question.QuestionID]"
-                                                       name="Answer[@question.QuestionID]" onclick="enableDisableNextInput(this)">
-
-                                                @question.Question <span class="error" style="background:white">*</span>
-                                            </label>
-                                        </p>
-
-
-                                    </div>
-                                }
-                                else if (question.QuestionType == "NonMandate")
-                                {
-                                    <div class="custom-control custom-checkbox" style="padding-left: 0">
-                                        <p>
-                                            <span>@(QuestionIndex++)</span>
-
-                                            <label class="custom-control-label1" for="Answer[@question.QuestionID]">
-                                                <input type="checkbox" class="custom-control-input1 passholder"
-                                                       id="Answer[@question.QuestionID]"
-                                                       name="Answer[@question.QuestionID]" onclick="enableDisableNextInput(this)">
-
-                                                @question.Question <span class="error" style="background:white"></span>
-                                            </label>
-                                        </p>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <p>
-                                        <span>@(QuestionIndex++)</span>
-                                        @question.Question <span class="error" style="background:white">*</span>
-                                    </p>
-
-                                    <div class="ans">
-                                        <textarea class="form-control" name="Answer[@question.QuestionID]" required></textarea>
-                                    </div>
-                                }
-
-                                @if (!string.IsNullOrEmpty(question.QuestionHint))
-                                {
-
-                                    <div class="msg"><p>@Html.Raw(HttpUtility.HtmlDecode(question.QuestionHint))</p></div>
-                                }
-
+                    <form id="frmDeclaration" name="frmDeclaration">
+                        <div class="question">
+                            <h1>declaration</h1>
+                            <h2 class="mb-none">declaration</h2>
+                            <div class="alert alert-warning" role="alert">
+                                In conjunction with requirements by the local authorities, Fairmont Singapore would be most appreciative if you could assist in kindly filling out this declaration.
                             </div>
-                        }
+                            @{
+                                int QuestionIndex = 1;
+                            }
+                            @foreach (var question in Model.Questions)
+                            {
+                                <div class="qs">
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="button-center mt-4">
-                                    <button type="button" class="btn_next btn_blue confirmDeclaration"><i class="fas fa-check-circle"></i> Confirm</button>
+                                    @if (question.QuestionType == "Radio")
+                                    {
+                                        <p>
+                                            <span>@(QuestionIndex++)</span>
+                                            @question.Question <span class="error" style="background:white">*</span>
+                                        </p>
+
+                                        <div class="ans">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="1_Answer_@question.QuestionID" required
+                                                       name="Answer[@question.QuestionID]"
+                                                       value="Yes"
+                                                       class="custom-control-input declarationRadio">
+                                                <label class="custom-control-label" for="1_Answer_@question.QuestionID">Yes</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="2_Answer_@question.QuestionID"
+                                                       name="Answer[@question.QuestionID]" required
+                                                       value="No"
+                                                       class="custom-control-input declarationRadio">
+                                                <label class="custom-control-label" for="2_Answer_@question.QuestionID">No</label>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (question.QuestionType == "Checkbox")
+                                    {
+                                        <div class="custom-control custom-checkbox" style="padding-left: 0">
+                                            <p>
+                                                <span>@(QuestionIndex++)</span>
+
+                                                <label class="custom-control-label1" for="Answer[@question.QuestionID]">
+                                                    <input type="checkbox" class="custom-control-input1 passholder"
+                                                           id="Answer[@question.QuestionID]"
+                                                           name="Answer[@question.QuestionID]" onclick="enableDisableNextInput(this)">
+
+                                                    @question.Question <span class="error" style="background:white">*</span>
+                                                </label>
+                                            </p>
+
+
+                                        </div>
+                                    }
+                                    else if (question.QuestionType == "NonMandate")
+                                    {
+                                        <div class="custom-control custom-checkbox" style="padding-left: 0">
+                                            <p>
+                                                <span>@(QuestionIndex++)</span>
+
+                                                <label class="custom-control-label1" for="Answer[@question.QuestionID]">
+                                                    <input type="checkbox" class="custom-control-input1 passholder"
+                                                           id="Answer[@question.QuestionID]"
+                                                           name="Answer[@question.QuestionID]" onclick="enableDisableNextInput(this)">
+
+                                                    @question.Question <span class="error" style="background:white"></span>
+                                                </label>
+                                            </p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            <span>@(QuestionIndex++)</span>
+                                            @question.Question <span class="error" style="background:white">*</span>
+                                        </p>
+
+                                        <div class="ans">
+                                            <textarea class="form-control" name="Answer[@question.QuestionID]" required></textarea>
+                                        </div>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(question.QuestionHint))
+                                    {
+
+                                        <div class="msg"><p>@Html.Raw(HttpUtility.HtmlDecode(question.QuestionHint))</p></div>
+                                    }
+
+                                </div>
+                            }
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="button-center mt-4">
+                                        <button type="button" class="btn_next btn_blue confirmDeclaration"><i class="fas fa-check-circle"></i> Confirm</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div>*@
+                    </form>
+                </div>*@
             <div class="tab-pane  content-wrapper cstm-form" id="qrCode">
                 <div class="content">
                     <div class="qr">
@@ -673,17 +677,17 @@
                         </div>
                         <p> Thank you for taking the time to complete the Pre-Arrival Registration.</p>
                         <p> A copy of the QR code and confirmation number will be sent to your email. Please present it at the counter on the day of your stay to collect your Room Key.</p>
-                       
+
                         <p>We look forward to welcoming you to Paradox Singapore Merchant Court at Clarke Quay!</p>
                         <div class="row">
                             <div class="col-md-12 text-center mt-5">
                                 @*<div class="buttonwrapper">
-                    <ul>
-                        <li><a class="apple" href="#"></a></li>
-                        <li><a class="google" href="#"></a></li>
-                    </ul>
-                    <a href="#">Save to Photo Library</a>
-                </div>*@
+                                        <ul>
+                                            <li><a class="apple" href="#"></a></li>
+                                            <li><a class="google" href="#"></a></li>
+                                        </ul>
+                                        <a href="#">Save to Photo Library</a>
+                                    </div>*@
                                 @*<img src="data:image/jpeg;base64,@ViewBag.CalQRcode" height="200" />*@
                                 <br /><br />
                                 <iframe id="my_iframe" style="display:none;"></iframe>
@@ -719,15 +723,15 @@
                 </button>
             </div>
             <div class="modal-body">
-               
+
                 <p>
-                  I hereby agree to be jointly and severally liable with the person, company or association as may be indicated on this registrationcard, for all charges incurred on all accounts which I maynow or hereafter maintain with the hotel. I authorize the hotel to charge to my credit card if I choose not to check out at the frontdesk.
+                    I hereby agree to be jointly and severally liable with the person, company or association as may be indicated on this registrationcard, for all charges incurred on all accounts which I maynow or hereafter maintain with the hotel. I authorize the hotel to charge to my credit card if I choose not to check out at the frontdesk.
                 </p>
-               
+
                 <p>
                     The hotel is a smoke-free hotel. A cleaning fee of S$275 nett per incident will be charged to a guest smoking in the room and/orwithin the hotel premises.Complimentary safe depositboxes are available in the room for the safe keeping of your valuables, I acknowledge that liability of the hotel is governed by the Innkeepers Act.
                 </p>
-                
+
                 <p>
                     The hotel, as data controller, processes the personal data you provide in this form or during your stay
                     for the purposes of booking management, compliance with legal obligations and,based on legitimate interest,
@@ -743,12 +747,12 @@
                     to data portability. You also have the right to
                     lodge a complaint with a supervisory authority. For more information, you can consult 20 Merchant Road Singapore 058281, Reg. No.: 201021900G/52958665K, Tel: (65) 6337 2288 Fax: (65) 6334 0606
                 </p>
-              
+
                 <p>
                     Yes, I wish to receive information about services and/or special promotions from Paradox Hotel group (and its affiliates and partners) via email.
                     Send me a satisfactory survey via my email address provided in this form.
                 </p>
-               
+
                 <div class="mt-4 text-center">
                     <button class="btnstyle blue" data-dismiss="modal" aria-label="Close">OK</button>
                 </div>
@@ -1584,7 +1588,7 @@
             return response;
         });
 
-        const validateDocumentDirect = (document) => httpPost(AdaptorAPIBaseURL + '/ProcessDocument', document).then(response => {
+        const validateDocumentDirect = (document) => httpPost(OCRAPIBaseURL + '/ProcessDocument', document).then(response => {
             return response;
         });
 
@@ -1867,7 +1871,7 @@
                 documentInformation.issueDate = response.responseData.issueDate;
             if (documentInformation.expiryDate !== null && documentInformation.expiryDate.length === 0)
                 documentInformation.expiryDate = response.responseData.expiryDate;
-            if (documentInformation.gender !== null &&  documentInformation.gender.length === 0)
+            if (documentInformation.gender !== null && documentInformation.gender.length === 0)
                 documentInformation.gender = response.responseData.gender;
             if (documentInformation.firstName !== null && documentInformation.firstName.length === 0)
                 documentInformation.firstName = response.responseData.firstName;

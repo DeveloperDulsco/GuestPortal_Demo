@@ -228,6 +228,7 @@ namespace CheckinPortal.Controllers
                     ViewBag.QRcode = QRCodeBase64;
 
                     ViewBag.AdaptorAPIBaseURL= ConfigurationManager.AppSettings["AdaptorAPIBaseURL"].ToString();
+                    ViewBag.OCRAPIBaseURL = ConfigurationManager.AppSettings["OCRAPIBaseURL"].ToString();
                     ViewBag.CalQRcode = "";
                     Helpers.LogHelper.Instance.Log($"Reservation  {confirmationNo} successfully returned", $"{confirmationNo}", "Index", "Pre-Checkin");
                     return View(reservationModel);
@@ -397,6 +398,7 @@ namespace CheckinPortal.Controllers
                         IsBreakFastAvailable = reservations[0].IsBreakFastAvailable != null ? reservations[0].IsBreakFastAvailable.Value : false
                     };
                     ViewBag.AdaptorAPIBaseURL = ConfigurationManager.AppSettings["AdaptorAPIBaseURL"].ToString();
+                    ViewBag.OCRAPIBaseURL = ConfigurationManager.AppSettings["OCRAPIBaseURL"].ToString();
 
                     QRCodeGenerator qrGenerator = new QRCodeGenerator();
                     QRCodeData qrCodeData = qrGenerator.CreateQrCode(confirmationNo, QRCodeGenerator.ECCLevel.Q);
@@ -898,54 +900,53 @@ namespace CheckinPortal.Controllers
                     NoofNights = 1;
                 }
 
-               
+
                 List<string> AuthoRuleOneReservationTypes = new List<string>();
                 AuthoRuleOneReservationTypes.Add("CC");
-                AuthoRuleOneReservationTypes.Add("CO");  
-                AuthoRuleOneReservationTypes.Add("DP");
+                AuthoRuleOneReservationTypes.Add("DR");
+                AuthoRuleOneReservationTypes.Add("CO");
                 AuthoRuleOneReservationTypes.Add("NG");
-                AuthoRuleOneReservationTypes.Add("TA");
-                AuthoRuleOneReservationTypes.Add("VO");
-                List<string> AuthoRuleTwoReservationTypes = new List<string>();
-               
-              
-               
-                AuthoRuleTwoReservationTypes.Add("DR");
 
-                List<string> AuthoRuleThreeReservationTypes = new List<string>();
+
+
+                List<string> AuthoRuleTwoReservationTypes = new List<string>();
+                AuthoRuleTwoReservationTypes.Add("DP");
+                AuthoRuleTwoReservationTypes.Add("TA");
                 AuthoRuleTwoReservationTypes.Add("GG");
+                
 
                 string ReservationType = reservation.ReservationSource != null ? reservation.ReservationSource : "";
+
 
                 if (AuthoRuleOneReservationTypes.Any(x => x.Contains(ReservationType)))
                 {
                     //Rule 1
 
-                    if(FundingSource == "CREDIT")
+                    if (FundingSource == "CREDIT")
                     {
                         if (!string.IsNullOrEmpty(PaymentMethod) && (PaymentMethod.ToUpper().Contains("JCB") || PaymentMethod.ToUpper().Contains("CUP")))
                         {
-                            PreuthAmount = 0;// No incidental charge for JCB and CUP
+                            PreuthAmount = roomrate;// No incidental charge for JCB and CUP
                             IncidentialCharge = 0;
                         }
                         else
                         {
-                            if ((NoofNights * IncidentialCharge) > incidentalCap)
-                            {
-                                PreuthAmount = incidentalCap;
 
+                            if (incidentalCap != -1)
+                            {
+                                if ((NoofNights * IncidentialCharge) > incidentalCap)
+                                    PreuthAmount = roomrate + incidentalCap;
+                                else
+                                    PreuthAmount = roomrate + (NoofNights * IncidentialCharge);
                             }
                             else
-                            {
+                                PreuthAmount = roomrate + (NoofNights * IncidentialCharge);
 
-                                PreuthAmount = (NoofNights * IncidentialCharge);
-                            }
-                               
                         }
                     }
                     else
                     {
-                        PreuthAmount = 0; // No incidental charge for DEBIT card
+                        PreuthAmount = roomrate; // No incidental charge for DEBIT card
                         IncidentialCharge = 0;
                     }
 
@@ -960,42 +961,40 @@ namespace CheckinPortal.Controllers
                         {
                             PreuthAmount = 0;// No incidental charge for JCB and CUP
                             IncidentialCharge = 0;
+                            roomrate = 0;
                         }
                         else
                         {
-                            if ((NoofNights * IncidentialCharge) > incidentalCap)
+                            roomrate = 0;
+                            if (incidentalCap != -1)
                             {
-                                PreuthAmount = roomrate + incidentalCap;
+                                if ((NoofNights * IncidentialCharge) > incidentalCap)
+                                    PreuthAmount = roomrate + incidentalCap;
+                                else
+                                    PreuthAmount = roomrate + (NoofNights * IncidentialCharge);
                             }
                             else
-                            {
                                 PreuthAmount = roomrate + (NoofNights * IncidentialCharge);
 
-                            }
-                                
                         }
                     }
                     else
                     {
-                       PreuthAmount = roomrate;// No incidental charge for DEBIT card
+                        roomrate = 0;
+                        PreuthAmount = 0;// No incidental charge for DEBIT card
                         IncidentialCharge = 0;
                     }
 
-                    
-
-                }
-                else if (AuthoRuleTwoReservationTypes.Any(x => x.Contains(reservation.ReservationSource)))
-                {
-                    PreuthAmount = 0;// No incidental charge for DEBIT card
-                    IncidentialCharge = 0;
+                    //roomrate = 0;
 
                 }
                 else
                 {
-                    PreuthAmount = 0;// No incidental charge for DEBIT card
+                   
+                    roomrate = 0;
+                    PreuthAmount = 0;//
                     IncidentialCharge = 0;
                 }
-
 
 
                 if (PreuthAmount > 3500)
