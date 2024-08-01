@@ -49,7 +49,7 @@
             {
             <div class="tab-pane content-wrapper cstm-form active" id="folio">
                 @*<embed src="~/temp/@(Model.ReservationNumber).pdf" type="application/pdf" width="100%" height="550px" />*@
-                <iframe src="http://docs.google.com/viewer?url=@(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority))/temp/@(Model.ReservationNumber).pdf&embedded=true" style="width:100%; height:550px;" frameborder="0"></iframe>
+                <iframe src="https://docs.google.com/viewer?url=@(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority))/temp/@(Model.ReservationNumber).pdf&embedded=true" style="width:100%; height:550px;" frameborder="0"></iframe>
                 <div class="form-check text-center">
                     <input class="form-check-input" id="myCheck" value="sign" type="checkbox">
                     <label class="form-check-label" for="gridCheck">
@@ -138,9 +138,9 @@
                     <div class="sucess">
                         <div class="code"><img src="~/assets/images/tick.png"></div>
                         <label>Thank You!</label>
-                        <p>You have successfully checed out.</p>
-                        <p>Your room key will now be disabled.</p>
-                        <p>Thank you once again for choosing Paradox Singapore Merchant Court at Clarke Quay. We look forward to welcoming you again soon.</p>
+                        <p>You have successfully checked out.</p>
+                        <p>Please return the key cards to  Reception/Concierge.</p>
+                        <p>Thank you once again for choosing Paradox Singapore Merchant Court. We look forward to welcoming you again soon.</p>
                         <div class="row">
                             <div class="col-md-12 text-center mt-5">
                                 <a href="https://www.paradoxhotels.com/singapore/">
@@ -171,6 +171,7 @@
                             <li><a target="_blank" href="https://www.facebook.com/paradoxmerchantcourt"><i class="fab fa-facebook-square"></i></a></li>
                             <li><a target="_blank" href="https://www.instagram.com/paradoxmerchantcourt/"><i class="fab fa-instagram"></i></a></li>
                             <li><a target="_blank" href="https://www.linkedin.com/company/paradox-singapore-merchant-court-at-clarke-quay/"><i class="fab fa-linkedin"></i></a></li>
+                            <li><a target="_blank" href="https://qrco.de/tripadvisor-review"><i class="fab fa-tripadvisor"></i></a></li>
 
                         </ul>
                     </div>

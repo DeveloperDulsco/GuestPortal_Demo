@@ -227,6 +227,8 @@
                         <div class="form-group col-md-4 time-cstm">
                             <label>Expected Arrival Time(Hotel)  <span class="error">*</span></label>
                             @Html.TextBoxFor(model => model.ExpectedTimeofArrival, new { @class = "form-control", id = "timepicker1", type = "time" })
+                        <span> Official Hotel Check In Time is 15:00 hrs.</span>
+
                             @*<span>Hotel Check In Time is 03.00pm</span>*@
                             @*<input type="time" id="timepicker1" class="form-control" name="expected_arrival" value="@Model.ExpectedTimeofArrival">*@
                         </div>
@@ -445,14 +447,14 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="receviceUpdate" name="checkbox1">
                                 <label class="form-check-label" for="receviceUpdate">
-                                    I would like to receive information and updates from  Paradox Singapore Merchant Court at Clarke Quay.
+                                    I would like to receive information and updates from  Paradox Singapore Merchant Court.
                                 </label>
 
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="chkFine" name="checkbox2">
                                 <label class="form-check-label" for="chkFine">
-                                    The hotel is a smoke-free hotel. A cleaning fee of S$275 nett per incident will be charged to a guest smoking in the room and/or within the hotel premises.
+                                    <font color="red">*</font>The hotel is a smoke-free hotel. A cleaning fee of S$275 nett per incident will be charged to a guest smoking in the room and/or within the hotel premises.
                                 </label>
                             </div>
                             <div class="form-check">
@@ -678,7 +680,7 @@
                         <p> Thank you for taking the time to complete the Pre-Arrival Registration.</p>
                         <p> A copy of the QR code and confirmation number will be sent to your email. Please present it at the counter on the day of your stay to collect your Room Key.</p>
 
-                        <p>We look forward to welcoming you to Paradox Singapore Merchant Court at Clarke Quay!</p>
+                        <p>We look forward to welcoming you to Paradox Singapore Merchant Court!</p>
                         <div class="row">
                             <div class="col-md-12 text-center mt-5">
                                 @*<div class="buttonwrapper">
@@ -745,7 +747,7 @@
                     privacy@paradoxhotels.com. You have the right to request from the data controller, access to and rectification
                     or erasure of your personal data or restriction ofprocessing or to object to processing as well as the right
                     to data portability. You also have the right to
-                    lodge a complaint with a supervisory authority. For more information, you can consult 20 Merchant Road Singapore 058281, Reg. No.: 201021900G/52958665K, Tel: (65) 6337 2288 Fax: (65) 6334 0606
+                    lodge a complaint with a supervisory authority. For more information, you can consult 20 Merchant Road Singapore 058281, Reg. No.: 201021900G/49636800A, Tel: (65) 6337 2288 Fax: (65) 6334 0606
                 </p>
 
                 <p>
@@ -1310,31 +1312,40 @@
 
             const data = new FormData();
             var terms = $('#IsTermsAndConditionAccepted').is(':checked')
+            var fines = $('#chkFine').is(':checked')
 
             if (terms) {
+                if (fines) {
 
-                data.append('IsTermsAndConditionAccepted', terms);
-                data.append('ReservationID', $('#ReservationID').val());
-                if (signaturePad.isEmpty()) {
-                    $('#customMessageModalMessage').html("Please provide a signature first.");
-                    $('#customMessageModal').modal('show');
+                    data.append('IsTermsAndConditionAccepted', terms);
+                    data.append('ReservationID', $('#ReservationID').val());
+                    if (signaturePad.isEmpty()) {
+                        $('#customMessageModalMessage').html("Please provide a signature first.");
+                        $('#customMessageModal').modal('show');
 
 
-                    return false;
-                } else {
-                    var dataURL = signaturePad.toDataURL();
-                    var strImage = dataURL.replace(/^data:image\/[a-z]+;base64,/, "");
-                    data.append('Base64Signature', strImage);
+                        return false;
+                    } else {
+                        var dataURL = signaturePad.toDataURL();
+                        var strImage = dataURL.replace(/^data:image\/[a-z]+;base64,/, "");
+                        data.append('Base64Signature', strImage);
+                    }
+
+                    $('.loader-screen').fadeIn(100);
+                    fetch(BaseURL + '/Home/UpdatePolicies', {
+                        method: "POST",
+                        body: data,
+                    }).then(response => response = response.json()).then(response => {
+                        moveToNextTab(btn);
+                        $('.loader-screen').fadeOut(1000);
+                    });
                 }
-
-                $('.loader-screen').fadeIn(100);
-                fetch(BaseURL + '/Home/UpdatePolicies', {
-                    method: "POST",
-                    body: data,
-                }).then(response => response = response.json()).then(response => {
-                    moveToNextTab(btn);
-                    $('.loader-screen').fadeOut(1000);
-                });
+                else {
+                    
+                    $('#customMessageModalMessage').html("Please agree to the Smoking Policy");
+                        $('#customMessageModal').modal('show');
+                    }
+                
             }
             else {
                 $('#customMessageModalMessage').html("Please accept terms and conditions.");
@@ -1588,7 +1599,7 @@
             return response;
         });
 
-        const validateDocumentDirect = (document) => httpPost(AdaptorAPIBaseURL + '/ProcessDocument', document).then(response => {
+        const validateDocumentDirect = (document) => httpPost(AdaptorAPIBaseURL + '/OCRProcessDocument', document).then(response => {
             return response;
         });
 
@@ -1864,32 +1875,36 @@
 
 
         function assignDocumentInfo(response) {
-            if (documentInformation.documentType !== null && documentInformation.documentType.length === 0)
+            if (!documentInformation.documentType)
                 documentInformation.documentType = response.responseData.idType;
-            if (documentInformation.documentNumber !== null && documentInformation.documentNumber.length === 0)
+            if (!documentInformation.documentNumber)
                 documentInformation.documentNumber = response.responseData.documentNumber;
-            if (documentInformation.issueDate !== null && documentInformation.issueDate.length === 0)
+            if (!documentInformation.issueDate)
                 documentInformation.issueDate = response.responseData.issueDate;
-            if (documentInformation.expiryDate !== null && documentInformation.expiryDate.length === 0)
+            if (!documentInformation.expiryDate)
                 documentInformation.expiryDate = response.responseData.expiryDate;
-            if (documentInformation.gender !== null && documentInformation.gender.length === 0)
+            if (!documentInformation.gender)
                 documentInformation.gender = response.responseData.gender;
-            if (documentInformation.firstName !== null && documentInformation.firstName.length === 0)
+            if (!documentInformation.firstName)
                 documentInformation.firstName = response.responseData.firstName;
-            if (documentInformation.middleName !== null && documentInformation.middleName.length === 0)
+            if (!documentInformation.middleName)
                 documentInformation.middleName = response.responseData.middleName;
-            if (documentInformation.lastName !== null && documentInformation.lastName.length === 0)
+            if (!documentInformation.lastName)
                 documentInformation.lastName = response.responseData.lastName;
-            if (documentInformation.nationality !== null && documentInformation.nationality.length === 0)
+            if (!documentInformation.nationality)
                 documentInformation.nationality = response.responseData.nationality;
-            if (documentInformation.issueCountry !== null && documentInformation.issueCountry.length === 0)
+            if (!documentInformation.issueCountry)
                 documentInformation.issueCountry = response.responseData.issueCountry;
-            if (documentInformation.dateOfBirth !== null && documentInformation.dateOfBirth.length === 0)
-                documentInformation.birthDate = response.responseData.dateOfBirth;
-            if (documentInformation.faceImage !== null && documentInformation.faceImage.length === 0)
+            if (!documentInformation.faceImage)
                 documentInformation.faceImage = response.responseData.faceImage;
-            if (documentInformation.documentType !== null && documentInformation.documentType.length === 0)
+            if (!documentInformation.documentType)
                 documentInformation.documentType = response.responseData.idType;
+            documentInformation.issueCountry = response.responseData.issueCountry;
+            if (!documentInformation.birthDate)
+                if (response.responseData.dateOfBirth != null && response.responseData.dateOfBirth != "" && response.responseData.dateOfBirth != undefined)
+                    documentInformation.birthDate = response.responseData.dateOfBirth;
+            if (response.responseData.birthDate != null && response.responseData.birthDate != "" && response.responseData.birthDate != undefined)
+                documentInformation.birthDate = response.responseData.birthDate;
         }
 
         function resetDocumentInfo() {
