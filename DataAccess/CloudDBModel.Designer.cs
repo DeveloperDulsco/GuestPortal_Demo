@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\prave\source\repos\Fairmont\CheckinPortal_Fairmont\DataAccess\CloudDBModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\ProjectsToLive\MCIFiles\GuestPortal\CheckinPortal_Paradox\CheckinPortal_Paradox\DataAccess\CloudDBModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
