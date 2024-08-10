@@ -39,16 +39,24 @@
 <body>
 
 
-  
+
+
     <div class="container-fluid p-0" id="divSplash" style="display:none">
-        <div class="header" style="display:none">
-            <img class="img-fluid" src="~/assets/images/logo.png">
-        </div>
         <div class="layout-inro1">
-            <a class="continue" style="width:auto" onclick="beginCheckout()" href="#">BEGIN SELF CHECK-OUT</a>
+            <div class="logo-btn">
+                <img class="img-fluid" src="~/assets/images/logo.png">
+            </div>
+            <div class="start">
+                <div class="arrow">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+                <a class="continue" style="width:auto" onclick="beginCheckout()" href="#">START</a>
+            </div>
         </div>
     </div>
-
     <div class="loader-screen" style="display:none;z-index:99999">
         <div class="loadingio-spinner-pulse-yd5dl03y9fi">
             <div class="ldio-v55tnqe6ie">
@@ -57,43 +65,41 @@
         </div>
     </div>
 
-    <div class="container-fluid p-0" id="mainDiv" style="display:none">
-        <div class="header">
-            <img class="img-fluid" src="~/assets/images/logo.png">
+    <div class="container-fluid h100" id="mainDiv" style="display:none">
+        <div class="row h100 bg-blk">
+            @RenderBody()
         </div>
-        @RenderBody()
-    </div>
+        </div>
 
-
-    <div class="modal fade cstm-modal" id="customMessageModal" tabindex="-1" role="dialog" aria-labelledby="customMessageModalLabel" aria-hidden="true">
-        <div class="modal-dialog  modal-dialog-centered upload-model" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="customMessageModalLabel">Message</h5>
-                </div>
-                <div class="modal-body">
-                    <div class="quest card-quest">
-                        <h5 id="customMessageModalMessage"></h5>
-                        <br />
-                        <div class="btns">
-                            <button class="yes" data-dismiss="modal" data-toggle="modal">Continue</button>
+        <div class="modal fade cstm-modal" id="customMessageModal" tabindex="-1" role="dialog" aria-labelledby="customMessageModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered upload-model" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="customMessageModalLabel">Message</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="quest card-quest">
+                            <h5 id="customMessageModalMessage"></h5>
+                            <br />
+                            <div class="btns">
+                                <button class="yes" data-dismiss="modal" data-toggle="modal">Continue</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="~/assets/js/jquery-3.5.1.js"></script>
-    <script src="~/assets/js/bootstrap.bundle.js"></script>
-    <script src="~/assets/js/bootstrap-select.min.js"></script>
-    <script src="~/assets/js/moment.js"></script>
-    <script src="~/assets/js/commonFunctions.js"></script>
-    <script>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="~/assets/js/jquery-3.5.1.js"></script>
+        <script src="~/assets/js/bootstrap.bundle.js"></script>
+        <script src="~/assets/js/bootstrap-select.min.js"></script>
+        <script src="~/assets/js/moment.js"></script>
+        <script src="~/assets/js/commonFunctions.js"></script>
+        <script>
         var ReservationFound = "@ViewBag.ReservationFound";
         var PaymentProcessed = "@ViewBag.PaymentProcessed";
 
@@ -141,10 +147,10 @@
 
         });
 
-    </script>
+        </script>
 
 
-    @RenderSection("Scripts", false)
+        @RenderSection("Scripts", false)
 
 </body>
 </html>

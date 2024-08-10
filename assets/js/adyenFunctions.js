@@ -29,8 +29,8 @@ const savePaymentData = (paymentData) => httpPost(BaseURL + '/api/portalservice/
     return JSON.parse(response);
 });
 
-const makeDetailsCall = (paymentData) => httpPost(BaseURL + '/api/portalservice/makePaymentDetails', paymentData).then(response => {
-    return JSON.parse(response);
+const makeDetailsCall = (paymentData,ConfirmationNo, transactionID, ReservationNameID, TransactionType) => httpPost(BaseURL + '/Payment/makePaymentDetails?ConfirmationNo=' + ConfirmationNo + '&TransactionID=' + transactionID + '&ReservationNameID=' + ReservationNameID + '&TransactionType=' + TransactionType, paymentData).then(response => {
+    return response;
 });
 
 const CalculatePreAuthAmount = (paymentData) => httpPost(BaseURL + '/Home/CalculatePreAuthAmount', paymentData).then(response => {
@@ -63,7 +63,7 @@ var transactionType = "Sale";
 
 getOrginkey(BaseURL).then(orginKey => {
     getPaymentMethods().then(paymentMethodsResponse => {
-       
+
         const configuration = {
             paymentMethodsResponse: paymentMethodsResponse, // The `/paymentMethods` response from the server.
             originKey: orginKey,
@@ -71,41 +71,18 @@ getOrginkey(BaseURL).then(orginKey => {
             environment: "test",
             onSubmit: (state, dropin) => {
                 $('.loader-screen').fadeIn(100);
-                var costestimatorPostData = {
-                    Amount : 0,
-                    Currency : "SGD",
-                    EncryptedCard: state.data.paymentMethod.encryptedCardNumber,
-                    Mcc : "8999"
-                };
-
-                getCostEstimater(costestimatorPostData).then(estimatorResponse => {
-
-                    var FundingSource = "DEBIT";
-                    var PaymentMethod = "";
-                    if (estimatorResponse.Result) {
-
-                        FundingSource = estimatorResponse.FundingSource;
-                        transactionType = estimatorResponse.TransactionType;
-                        PaymentMethod = estimatorResponse.PaymentMethod;
-                    }
-                    if (PaymentMethod) {
-                        if (PaymentMethod.toUpperCase().includes("JCB") || PaymentMethod.toUpperCase().includes("CUP")) {
-                            FundingSource = "DEBIT";
-                            transactionType = "Sale";
-                        }
-                    }
-                    else {
-                        FundingSource = "DEBIT";
-                        transactionType = "Sale";
-                    }
-
+                var FundingSource = "DEBIT";
+                var PaymentMethod = "";
+                if (state.data.paymentMethod.type.toUpperCase().includes("WECHATPAYQR") || state.data.paymentMethod.type.toUpperCase().includes("ALIPAY")) {
+                    FundingSource = "DEBIT";
+                    PaymentMethod = "";
                     //Calculate PreAuthAmount
                     var data = {
                         ReservationNumber: ReservationNumber,
                         FundingSource: FundingSource,
                         PaymentMethod: PaymentMethod
                     };
-                    
+
                     CalculatePreAuthAmount(data).then(preauthAmountResponse => {
                         if (preauthAmountResponse.RoomRate > 0) {
                             $('#spanRoomRate').html("SGD " + preauthAmountResponse.RoomRate);
@@ -116,14 +93,10 @@ getOrginkey(BaseURL).then(orginKey => {
                         $('#spanIncidential').html("SGD " + preauthAmountResponse.IncidentialCharge + " x " + preauthAmountResponse.NoofNights + " Night(s)");
                         $('#spanTotalAmount').html("SGD " + preauthAmountResponse.PreuthAmount);
 
-                        if (transactionType == "Sale") {
-                            $('#idPaymentTitleLable').html('PAYMENT DETAILS');
-                            $('#paymentAmountConfirmationModalLabel').html('Please verify your payment details')
-                        }
-                        else {
-                            $('#idPaymentTitleLable').html('PREAUTHORISATION DETAILS');
-                            $('#paymentAmountConfirmationModalLabel').html('Please verify your preauthorisation details');
-                        }
+
+                        $('#idPaymentTitleLable').text('PAYMENT DETAILS');
+                        $('#paymentAmountConfirmationModalLabel').text('Please verify your payment details')
+                       
 
                         transactionID = moment().format('MMDDhhmmss');
 
@@ -134,7 +107,7 @@ getOrginkey(BaseURL).then(orginKey => {
                             MerchantReference: ReservationNumber + '-' + ReservationNameID,
                             FundingSource: FundingSource,
                             TransctionID: transactionID,
-                            ReservationNameID : ReservationNameID
+                            ReservationNameID: ReservationNameID
                         }
 
                         //Show Modal dialog
@@ -146,21 +119,109 @@ getOrginkey(BaseURL).then(orginKey => {
                         $('.loader-screen').fadeOut(500);
                         throw Error(error);
                     });
+                }
+                else {
+                    var costestimatorPostData = {
+                        Amount: 0,
+                        Currency: "SGD",
+                        EncryptedCard: state.data.paymentMethod.encryptedCardNumber,
+                        Mcc: "8999"
+                    };
 
-                });
+                    getCostEstimater(costestimatorPostData).then(estimatorResponse => {
 
+
+                        if (estimatorResponse.Result) {
+
+                            FundingSource = estimatorResponse.FundingSource;
+                            transactionType = estimatorResponse.TransactionType;
+                            PaymentMethod = estimatorResponse.PaymentMethod;
+                        }
+
+                        if (PaymentMethod.toUpperCase().includes("JCB") || PaymentMethod.toUpperCase().includes("CUP") || PaymentMethod.toUpperCase().includes("WECHATPAY") || PaymentMethod.toUpperCase().includes("ALIPAY")) {
+                            FundingSource = "DEBIT";
+                            transactionType = "Sale";
+                        }
+
+                        //Calculate PreAuthAmount
+                        var data = {
+                            ReservationNumber: ReservationNumber,
+                            FundingSource: FundingSource,
+                            PaymentMethod: PaymentMethod
+                        };
+
+                        CalculatePreAuthAmount(data).then(preauthAmountResponse => {
+                            if (preauthAmountResponse.RoomRate > 0) {
+                                $('#spanRoomRate').html("SGD " + preauthAmountResponse.RoomRate);
+                            }
+                            else {
+                                $('#spanRoomRate').html("--");
+                            }
+                            $('#spanIncidential').html("SGD " + preauthAmountResponse.IncidentialCharge + " x " + preauthAmountResponse.NoofNights + " Night(s)");
+                            $('#spanTotalAmount').html("SGD " + preauthAmountResponse.PreuthAmount);
+
+                            if (transactionType == "Sale") {
+                                $('#idPaymentTitleLable').text('PAYMENT DETAILS');
+                                $('#paymentAmountConfirmationModalLabel').text('Please verify your payment details')
+                            }
+                            else {
+                                $('#idPaymentTitleLable').text('PREAUTHORISATION DETAILS');
+                                $('#paymentAmountConfirmationModalLabel').text('Please verify your preauthorisation details');
+                            }
+
+                            transactionID = moment().format('MMDDhhmmss');
+
+                            makePaymentRequest = {
+                                makePaymentRequest: state.data,
+                                ConfirmationNo: ReservationNumber,
+                                AmountToCharge: preauthAmountResponse.PreuthAmount,
+                                MerchantReference: ReservationNumber + '-' + ReservationNameID,
+                                FundingSource: FundingSource,
+                                TransctionID: transactionID,
+                                ReservationNameID: ReservationNameID
+                            }
+
+                            //Show Modal dialog
+                            $('#paymentAmountConfirmationModal').modal('show');
+
+                            $('.loader-screen').fadeOut(500);
+
+                        }).catch(error => {
+                            $('.loader-screen').fadeOut(500);
+                            throw Error(error);
+                        });
+
+                    });
+                }
 
             },
             onAdditionalDetails: (state, dropin) => {
-
+              
                 // Your function calling your server to make a `/payments/details` request
-                makeDetailsCall(state.data).then(response => {
-                    if (response.action) {
-                        // Drop-in handles the action object from the /payments response
-                        dropin.handleAction(response.action);
-                    } else {
-                        // Your function to show the final result to the shopper
-                        showFinalResult(response);
+                makeDetailsCall(state.data, ReservationNumber, transactionID, ReservationNameID, transactionType).then(response => {
+                    console.log('Make payment reponse');
+                    console.log(response)
+                    if (response.result) {
+                        if (response.IsAuthorized) {
+
+                            $('.loader-screen').fadeOut(500);
+                            moveToNextTab($('#btnPaymentNextButton'));
+                            $('#paymentStatusMessage').html("Your payment was successful.");
+                            $('#paymentStatusModal').modal('show');
+                            $('#paymentAmountConfirmationModal').modal('hide');
+                        }
+                        else {
+
+                            $('#customMessageModalMessage').html(response.message)
+                            $('#customMessageModal').modal('show');
+                            $('.loader-screen').fadeOut(100);
+                        }
+                    }
+                    else {
+
+                        $('#customMessageModalMessage').html(response.message)
+                        $('#customMessageModal').modal('show');
+                        $('.loader-screen').fadeOut(100);
                     }
                 }).catch(error => {
                     throw Error(error);
@@ -180,7 +241,7 @@ getOrginkey(BaseURL).then(orginKey => {
         const checkout = new AdyenCheckout(configuration);
 
         dropin = checkout.create('dropin').mount('#dropin-container');
-
+      
     });
 });
 
@@ -193,11 +254,20 @@ function proceedWithPayment() {
         console.log(response)
 
         if (response.result) {
+
             if (response.isRedirect) {
 
                 var responseJson = JSON.parse(response.adyenResponse);
                 SaveAdyenPaymentDetails(responseJson, ReservationNumber, transactionID, ReservationNameID, transactionType).then(saveresponse => {
                     console.log(responseJson.action);
+                    dropin.handleAction(responseJson.action);
+                });
+            }
+            else if (response.isPresenttoShopper) {
+                var responseJson = JSON.parse(response.adyenResponse);
+                SaveAdyenPaymentDetails(responseJson, ReservationNumber, transactionID, ReservationNameID, transactionType).then(saveresponse => {
+                    console.log(responseJson.action);
+
                     dropin.handleAction(responseJson.action);
                 });
             }

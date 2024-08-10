@@ -21,7 +21,7 @@ namespace CheckinPortal.Controllers
         public async Task<ActionResult> Index(string id)
         {
 
-            var test = Url.Encode(Helpers.EncryptionHelper.EncryptString("23651"));
+            var test = Url.Encode(Helpers.EncryptionHelper.EncryptString("321664"));
             if (string.IsNullOrEmpty(id))
             {
                 return View("ReservationNotFound");

@@ -8,7 +8,7 @@ namespace CheckinPortal.Helpers
 {
     public class LogHelper
     {
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+       private static Logger _logger = LogManager.GetCurrentClassLogger();
         private static readonly Lazy<LogHelper>
           lazy = new Lazy<LogHelper>(() => new LogHelper()
           {
