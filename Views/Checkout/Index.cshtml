@@ -44,9 +44,9 @@
         <div class="logo"> <img class="img-fluid" src="~/assets/images/logo.png"></div>
         @{ int PageNo = 1;}
     <ul>
-        <li class="active"><a href="#guestDetails"><label>Tax Invoice</label><span class="count">@PageNo</span></a></li>
+        <li class="active tabs"><a href="#guestDetails"><label>Tax Invoice</label><span class="count">@PageNo</span></a></li>
         @{ PageNo++;}
-        <li class="@(ViewBag.EcomStatus ? "paymentdone active" : "")"><a href="#upgrade"><label>Payment</label><span class="count">@PageNo</span></a></li>
+        <li class="@(ViewBag.EcomStatus ? "paymentdone active" : "") tabs"><a href="#upgrade"><label>Payment</label><span class="count">@PageNo</span></a></li>
     </ul>
     </div>
 </div>
@@ -62,7 +62,7 @@
                         <div class="tab-content">
                             @if (ViewBag.EcomStatus == null || !ViewBag.EcomStatus)
                             {
-                                <div class="tab-pane content-wrapper cstm-form active" id="folio">
+                                <div class="tab-pane cstm-form active" id="folio">
                                     @*<embed src="~/temp/@(Model.ReservationNumber).pdf" type="application/pdf" width="100%" height="550px" />*@
                                     <iframe src="https://docs.google.com/viewer?url=@(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority))/temp/@(Model.ReservationNumber).pdf&embedded=true" style="width:100%; height:550px;" frameborder="0"></iframe>
                                     <div class="form-check text-center">
@@ -105,7 +105,7 @@
 
                             @if (ViewBag.EcomStatus == null || !ViewBag.EcomStatus)
                             {
-                                <div class="tab-pane content-wrapper cstm-form" id="payment">
+                                <div class="tab-pane cstm-form" id="payment">
                                     <div id="paymentTab">
                                         <h1>PAYMENT</h1>
 
@@ -148,17 +148,17 @@
                                     </div>
                                 </div>
                             }
-                            <div class="tab-pane content-wrapper cstm-form @((ViewBag.EcomStatus)  ? "active" : "")" id="thankyou">
+                            <div class="tab-pane cstm-form @((ViewBag.EcomStatus)  ? "active" : "")" id="thankyou">
                                 <div class="min-height">
                                     <div class="sucess">
                                         <div class="code"><img src="~/assets/images/tick.png"></div>
                                         <label>Thank You!</label>
                                         <p>You have successfully checked out.</p>
                                         <p>Please return the key cards to  Reception/Concierge.</p>
-                                        <p>Thank you once again for choosing Paradox Singapore Merchant Court. We look forward to welcoming you again soon.</p>
+                                        <p>Thank you once again for choosing Dsuite. We look forward to welcoming you again soon.</p>
                                         <div class="row">
                                             <div class="col-md-12 text-center mt-5">
-                                                <a href="https://www.paradoxhotels.com/singapore/">
+                                                <a href="https://www.dsuite.io/">
                                                     <button class="btn_upload"><img src="~/assets/images/tick_icon.png">OK</button>
                                                 </a>
                                             </div>
@@ -182,12 +182,11 @@
                                     <div class="social-media">
                                         <p>Subscribe to our mailing list or follow us on Facebook and Instagram for exclusive offers and updates.</p>
                                         <ul>
-                                            <li><a target="_blank" href="mailto:info@paradoxsingapore.com"><i class="fas fa-envelope-square"></i></a></li>
-                                            <li><a target="_blank" href="https://www.facebook.com/paradoxmerchantcourt"><i class="fab fa-facebook-square"></i></a></li>
-                                            <li><a target="_blank" href="https://www.instagram.com/paradoxmerchantcourt/"><i class="fab fa-instagram"></i></a></li>
-                                            <li><a target="_blank" href="https://www.linkedin.com/company/paradox-singapore-merchant-court-at-clarke-quay/"><i class="fab fa-linkedin"></i></a></li>
-                                            <li><a target="_blank" href="https://qrco.de/tripadvisor-review"><i class="fab fa-tripadvisor"></i></a></li>
-
+                                            <li><a target="_blank" href="mailto:info@dotsinfosys.com"><i class="fas fa-envelope-square"></i></a></li>
+                                            <li><a target="_blank" href="https://www.facebook.com/dotsinformation"><i class="fab fa-facebook-square"></i></a></li>
+                                            <li><a target="_blank" href="https://www.instagram.com/dotsinformationsystem/"><i class="fab fa-instagram"></i></a></li>
+                                            <li><a target="_blank" href="https://linkedin.com/company/dotsinformationsystem/"><i class="fab fa-linkedin"></i></a></li>
+                                          
                                         </ul>
                                     </div>
                                 </div>
@@ -490,39 +489,7 @@
                     <script>
 
 
-        function moveToNextTab(currentTab) {
-            var $parentDiv = $(currentTab).parents('div.tab-pane');
-            var currentTabIndex = $('.tab-pane').index($parentDiv);
-            var nextTab = $parentDiv.next();
-            if (nextTab.length > 0) {
-                $parentDiv.removeClass('active');
-                $parentDiv.next().addClass('active');
-                setActiveTab(+currentTabIndex + 1);
-            }
-            $("html, body").animate({ scrollTop: 0 }, "slow");
-        }
-
-        function movePrevTab(currentTab) {
-            var $parentDiv = $(this).parents('div.tab-pane');
-            var currentTabIndex = $('.tab-pane').index($parentDiv);
-            var nextTab = $parentDiv.prev();
-            if (nextTab.length > 0) {
-                $parentDiv.removeClass('active');
-                $parentDiv.prev().addClass('active');
-                setActiveTab(+currentTabIndex - 1);
-            }
-            $("html, body").animate({ scrollTop: 0 }, "slow");
-        }
-
-
-        $('.moveNext').on('click', function () {
-            moveToNextTab(this);
-        });
-
-
-        $('.movePrev').on('click', function () {
-            movePrevTab(this);
-        });
+      
 
 
 
@@ -531,7 +498,39 @@
 
 
         }
+                        function moveToNextTab(currentTab) {
+                            var $parentDiv = $(currentTab).parents('div.tab-pane');
+                            var currentTabIndex = $('.tab-pane').index($parentDiv);
+                            var nextTab = $parentDiv.next();
+                            if (nextTab.length > 0) {
+                                $parentDiv.removeClass('active');
+                                $parentDiv.next().addClass('active');
+                                setActiveTab(+currentTabIndex + 1);
+                            }
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            }
 
+                            function movePrevTab(currentTab) {
+                                var $parentDiv = $(this).parents('div.tab-pane');
+                                var currentTabIndex = $('.tab-pane').index($parentDiv);
+                                var nextTab = $parentDiv.prev();
+                                if (nextTab.length > 0) {
+                                    $parentDiv.removeClass('active');
+                                    $parentDiv.prev().addClass('active');
+                                    setActiveTab(+currentTabIndex - 1);
+                                }
+                                $("html, body").animate({ scrollTop: 0 }, "slow");
+                            }
+
+
+                            $('.moveNext').on('click', function () {
+                                moveToNextTab(this);
+                            });
+
+
+                            $('.movePrev').on('click', function () {
+                                movePrevTab(this);
+                            });
 
         function AgreeAndMoveNext(obj) {
 

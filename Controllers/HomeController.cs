@@ -101,11 +101,12 @@ namespace CheckinPortal.Controllers
                         ViewBag.RoomUpsellPackages = string.Empty;
                         ViewBag.SpecialPackages = string.Empty;
                         ViewBag.ReservationPackagesList = new List<ReservationPackageModel>();
-                    } 
+                    }
                     #endregion
 
 
-                    if ((reservations[0].EcomPaymentStatus != null && reservations[0].EcomPaymentStatus.Value) || isredirectfromPaymentPage)
+                    //  if ((reservations[0].EcomPaymentStatus != null && reservations[0].EcomPaymentStatus.Value) || isredirectfromPaymentPage)
+                    if (isredirectfromPaymentPage)
                     {
                         Helpers.LogHelper.Instance.Log($"Reservation #{confirmationNo} payment already done.", $"{confirmationNo}", "Index", "Pre-Checkin");
                         ViewBag.PaymentProcessed = true;
@@ -600,10 +601,10 @@ namespace CheckinPortal.Controllers
             Helpers.LogHelper.Instance.Debug($"Uploading Document Json : {Newtonsoft.Json.JsonConvert.SerializeObject(documentModel)}", $"{uploadGuestDocumentModel.ReservationID}", "UploadDocument", "Pre-Checkin");
 
             reservationLogics.UpdateReservationByStage("Upload", documentModel);
-            reservationLogics.UpdateReservationByStage("Finish", new UpdateReservationModel()
-            {
-                ReservationID = uploadGuestDocumentModel.ReservationID
-            });
+            //reservationLogics.UpdateReservationByStage("Finish", new UpdateReservationModel()
+            //{
+            //    ReservationID = uploadGuestDocumentModel.ReservationID
+            //});
             return Json(new { result = count > 0 });
         }
 
@@ -640,10 +641,10 @@ namespace CheckinPortal.Controllers
 
             Helpers.LogHelper.Instance.Log($"PreCheckin Completed", $"{ReservationID}", "CompletePreCheckin", "Pre-Checkin");
 
-            reservationLogics.UpdateReservationByStage("Finish", new UpdateReservationModel()
-            {
-                ReservationID = ReservationID
-            });
+            //reservationLogics.UpdateReservationByStage("Finish", new UpdateReservationModel()
+            //{
+            //    ReservationID = ReservationID
+            //});
             var redirectURL = ConfigurationManager.AppSettings["PreCheckinCompleteRedirectURL"].ToString();
             return Redirect(redirectURL);
         }

@@ -257,7 +257,7 @@ namespace CheckinPortal.Controllers
 
         public ActionResult CompletePreCheckout(int ReservationID)
         {
-            var reservations = reservationLogics.UpdateCheckoutFlag(ReservationID);
+            //var reservations = reservationLogics.UpdateCheckoutFlag(ReservationID);
             return Json(new { result = true });
         }
 
@@ -265,7 +265,7 @@ namespace CheckinPortal.Controllers
         {
             Helpers.LogHelper.Instance.Log($"Updating  checkout flag.", "", "Checkout/UpdateSignature", "Pre-Checkout");
             Models.CheckoutReservationModel checkoutReservation = new Models.CheckoutReservationModel();
-            var reservations = reservationLogics.UpdateCheckoutFlag(ReservationID);
+            //var reservations = reservationLogics.UpdateCheckoutFlag(ReservationID);
             return Json(new { result = true });
         }
 
@@ -373,7 +373,7 @@ namespace CheckinPortal.Controllers
                                 var reservations = Helpers.DataTableHelper.DataTableToList<Models.GetReservationDetailsModel>(reservationsDt);
                                 if (reservationLogics != null)
                                 {
-                                    reservationLogics.updateCheckoutFlag(reservations[0].ReservationNameID);
+                                   // reservationLogics.updateCheckoutFlag(reservations[0].ReservationNameID);
                                 }
                             }
 
@@ -435,7 +435,7 @@ namespace CheckinPortal.Controllers
 
             Helpers.LogHelper.Instance.Log($"Updating precheckout complete flag.", "", "Checkout/InsertPaymentResponseHeader", "Pre-Checkout");
 
-            reservationLogics.UpdateCheckoutFlag(reservations[0].ReservationDetailID);
+            //reservationLogics.UpdateCheckoutFlag(reservations[0].ReservationDetailID);
 
             #endregion
 
@@ -557,7 +557,7 @@ namespace CheckinPortal.Controllers
                     var saveTopupTransctionToDB = await reservationLogics.InsertPaymentData(paymentResponse, reservations[0].ReservationNumber, reservations[0].ReservationNameID, TransactionID, transactionType);
                     if (saveTopupTransctionToDB)
                     {
-                        reservationLogics.updateCheckoutFlag(reservations[0].ReservationNameID.ToString());
+                        //reservationLogics.updateCheckoutFlag(reservations[0].ReservationNameID.ToString());
                         return Json(new { result = true, message = "success" });
                     }
                     else
@@ -646,7 +646,7 @@ namespace CheckinPortal.Controllers
                             // Update trasaction to captured
                             //return success
 
-                            reservationLogics.updateCheckoutFlag(reservations[0].ReservationNameID.ToString());
+                          //  reservationLogics.updateCheckoutFlag(reservations[0].ReservationNameID.ToString());
                             return Json(new { result = true, message = "success" });
                         }
                         else
